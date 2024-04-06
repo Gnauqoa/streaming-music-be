@@ -1,0 +1,67 @@
+version: '2'
+services:
+  redis:
+    image: redis
+    hostname: redis
+    command: redis-server
+    volumes:
+      - /var/lib/redis/data
+
+  postgres:
+    image: postgres:12.10
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=BUkG1V32AZAS7BvZPmfx0Xh8x
+      - POSTGRES_DB=dbname
+    volumes:
+      - ./postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "5432"
+
+  api:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      args:
+        RAILS_ENV: production
+    command: |
+      ./wait-for-it.sh postgres:5432 -- bash -c "bundle exec rake db:migrate && bundle exec puma -p 5000"
+    environment:
+      - RAILS_ENV=production
+      - DATABASE_URL=postgres://root:BUkG1V32AZAS7BvZPmfx0Xh8x@postgres:5432/dbname
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./:/app
+      - /opt/storage/casino-be/:/opt/storage/casino-be
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+    env_file:
+      - .env
+
+  sidekiq:
+    depends_on:
+      - postgres
+      - redis
+    links:
+      - postgres
+      - redis
+    environment:
+      - DATABASE_URL=postgres://root:BUkG1V32AZAS7BvZPmfx0Xh8x@postgres:5432/dbname
+      - REDIS_URL=redis://redis:6379/0
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - '.:/app'
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"

@@ -1,0 +1,2 @@
+class BonusProgramController < ApplicationController
+end

@@ -1,0 +1,6 @@
+:scheduler:
+  :dynamic: true
+  :schedule:
+    pull_we_bet_records:
+      cron: '0 */2 * * * *'   # Runs once per minute
+      class: 'We::PullBetRecords'

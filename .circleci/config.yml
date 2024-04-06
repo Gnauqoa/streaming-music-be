@@ -1,0 +1,195 @@
+version: 2.1
+
+orbs:
+  discord: antonioned/discord@0.1.0
+
+jobs:
+  rspec:
+    environment:
+      DATABASE_HOST: localhost
+      DATABASE_USR: circleci
+      DATABASE_NAME: user-service-test
+      RAILS_ENV: test
+    docker:
+      - image: cimg/ruby:2.7.6
+      - image: cimg/postgres:13.6
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: user-service-test
+      - image: cimg/redis:6.2.6
+    working_directory: ~/user-service
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - user-service-bundler-v1-{{ checksum "Gemfile.lock" }}
+            - user-service-bundler-v1-
+      - run:
+          name: Install Gem dependencies
+          command: |
+            set +eo pipefail
+            gem install bundler:2.1.4
+            bundle config set --local path 'vendor/bundle'
+            bundle config set --local without 'development'
+      - run:
+          name: Install build tools
+          command: |
+            sudo apt-get update -qq --fix-missing
+            sudo apt-get install -y --no-install-recommends build-essential libv8-dev nodejs automake pkg-config libtool libffi-dev libssl-dev libgmp-dev python-dev
+      - run:
+          name: Bundle check and install
+          command: |
+            bundle check || bundle install
+      - run:
+          name: Cleaning up
+          command: |
+            mkdir -p tmp/; mkdir -p tmp/cache/
+      - save_cache:
+          key: user-service-bundler-v1-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/user-service/vendor/bundle
+      - run: bundle exec rake db:schema:load
+      - run: bundle exec rspec --format progress --format RspecJunitFormatter --out /tmp/test-results/rspec.xml
+      - store_test_results:
+          path: /tmp/test-results
+      - discord/status:
+          fail_only: true
+          failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed."
+  ruby_convention:
+    parameters:
+      base-branch:
+        description: The base branch this will be merged to
+        type: string
+    docker:
+      - image: cimg/ruby:2.7.6
+    working_directory: ~/app
+    steps:
+      - restore_cache:
+          keys:
+            - user-service-source-v1-{{ .Branch }}-{{ .Revision }}
+            - user-service-source-v1-{{ .Branch }}-
+            - user-service-source-v1-
+      - checkout
+      - run:
+          name: Check rubocop
+          environment:
+            MY_BASE_BRANCH: << parameters.base-branch >>
+          command: |
+            gem install rubocop -v 1.12.0
+            gem install rubocop-rspec -v 2.1.0
+            git diff --diff-filter=ACM --name-only $(git merge-base $CIRCLE_BRANCH origin/$MY_BASE_BRANCH) > target-files
+            [ ! -s target-files ] && echo 'NO CHANGED FILES' || rubocop $(paste -sd ' ' target-files) --force-exclusion --display-cop-names --display-only-fail-level-offenses --fail-level=warning
+
+  build_and_push_docker_image:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache \
+              py-pip=9.0.0-r1
+            pip install \
+              docker-compose==1.12.0 \
+              awscli==1.11.76
+            apk update && apk add curl curl-dev bash
+      - restore_cache:
+          keys:
+            - user-service-v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=app -t app .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
+      - save_cache:
+          key: user-service-v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - deploy:
+          name: Push application Docker image
+          command: |
+            docker login ${ECR_ENDPOINT} -u="${DIGITALOCEAN_ACCESS_TOKEN}" -p="${DIGITALOCEAN_ACCESS_TOKEN}"
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              docker tag app "${ECR_ENDPOINT}/user-service:staging"
+              docker push "${ECR_ENDPOINT}/user-service:staging"
+            elif [ "${CIRCLE_BRANCH}" == "development" ]; then
+              docker tag app "${ECR_ENDPOINT}/user-service:development"
+              docker push "${ECR_ENDPOINT}/user-service:development"
+            elif [ "${CIRCLE_BRANCH}" == "main" ]; then
+              docker tag app "${ECR_ENDPOINT}/user-service:latest"
+              docker push "${ECR_ENDPOINT}/user-service:latest"
+            fi
+      - discord/status:
+          fail_only: true
+          failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** failed to push docker image."
+  submit_deployment:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - run:
+          name: Trigger deployment
+          command: |
+            export LATEST_DOWNLOAD_LINK=$(curl --silent \
+                "https://api.github.com/repos/digitalocean/doctl/releases/latest" | \
+                  jq -r '.assets[] | select(.name|test(".*-linux-amd64.tar.gz")).browser_download_url')
+            curl -sL $LATEST_DOWNLOAD_LINK | tar -xzv -C /tmp
+            mv /tmp/doctl . && chmod +x doctl
+            ./doctl auth init -t ${DIGITALOCEAN_ACCESS_TOKEN}
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              ./doctl apps create-deployment ${STAGING_APP_ID} --wait
+            elif [ "${CIRCLE_BRANCH}" == "development" ]; then
+              ./doctl apps create-deployment ${DEVELOPMENT_APP_ID} --wait
+            elif [ "${CIRCLE_BRANCH}" == "main" ]; then
+              ./doctl apps create-deployment ${PRODUCTION_APP_ID} --wait
+            fi
+      - discord/status:
+          fail_only: false
+          failure_message: "**${CIRCLE_USERNAME}**'s build: **${CIRCLE_JOB}** / **${CIRCLE_BRANCH}** failed."
+          success_message: "**${CIRCLE_USERNAME}** deployed **${CIRCLE_BRANCH}**"
+workflows:
+  build_and_deploy:
+    jobs:
+      - ruby_convention:
+          context: org-global
+          base-branch: main
+          filters:
+            branches:
+              ignore:
+                - main
+      - rspec:
+          context: org-global
+      - build_and_push_docker_image:
+          context: org-global
+          filters:
+            branches:
+              only:
+                - main
+                - staging
+                - development
+          requires:
+            - rspec
+      - submit_deployment:
+          context: org-global
+          filters:
+            branches:
+              only:
+                - main
+                - staging
+                - development
+          requires:
+            - build_and_push_docker_image
