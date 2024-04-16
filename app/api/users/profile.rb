@@ -4,6 +4,24 @@ module Users
   class Profile < Base
     namespace :users do
       resources :current do
+        desc 'Update password for current user', summary: 'Update password'
+        params do
+          requires :current_password, type: String, desc: 'Current password'
+          requires :new_password, type: String, desc: 'New password'
+          requires :new_password_confirmation, type: String, desc: 'New password confirmation'
+          optional :password_regex, type: String, default: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, desc: 'Password regex'
+        end
+        put :password do
+          return error!(failure_response(:invalid_current_password), 422) unless current_user.valid_password?(params[:current_password])
+          return error!(failure_response(:passwords_do_not_match), 422) unless params[:new_password] == params[:new_password_confirmation]
+          return error!(failure_response(:invalid_password), 422) unless params[:new_password] =~ params[:password_regex]
+
+          current_user.password = params[:new_password]
+          current_user.save
+
+          format_response(current_user, serializer: UserProfileSerializer)
+        end
+
         desc 'Get user profile', summary: 'Get current user'
         get do
           format_response(current_user, serializer: UserProfileSerializer)
@@ -11,13 +29,8 @@ module Users
 
         desc 'Update current user', summary: 'Update current user'
         params do
-          optional :email, type: String, regexp: URI::MailTo::EMAIL_REGEXP,
-                           desc: 'The unique login email', documentation: { param_type: 'body' }
           optional :first_name, type: String, desc: 'User first name'
           optional :last_name, type: String, desc: 'User last name'
-          optional :current_password, type: String, desc: 'The login password if you want to change password'
-          optional :password, type: String, desc: 'The new password'
-          optional :avatar, type: File, desc: 'User avatar'
         end
         put do
           result = Update.new(
