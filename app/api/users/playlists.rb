@@ -8,10 +8,10 @@ module Users
         optional :per_page, type: Integer, desc: 'Per page number'
       end
       get do
-        items = Playlist.all
+        items = Playlist.where(user_id: current_user.id)
         items = items.order(id: :desc)
 
-        paginated_response(items, serializer: PlaylistSerializer)
+        paginated_response(items, serializer: PlaylistUserSerializer)
       end
 
       desc 'Create Playlist',
@@ -36,7 +36,7 @@ module Users
       end
       put do
         playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil?
+        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         playlist.update!(declared(params).except(:id))
         format_response(playlist)
@@ -49,7 +49,7 @@ module Users
       end
       delete ':id' do
         playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil?
+        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         playlist.destroy
         format_response(playlist)
@@ -62,7 +62,7 @@ module Users
       end
       get ':id' do
         playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil?
+        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         format_response(playlist, serializer: PlaylistSerializer)
       end
