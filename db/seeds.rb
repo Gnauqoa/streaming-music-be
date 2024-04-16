@@ -2,7 +2,7 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
 platform = Platform.create!(
-  name: 'Casking',
+  name: 'Streaming',
   client_id: "326ff5654b87fa2a31289ad03d7cb8e3"
 )
 
