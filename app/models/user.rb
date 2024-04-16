@@ -3,6 +3,10 @@
 class User < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search_by_username, against: [:username]
+  pg_search_scope :search_by_fullname, against: %i[first_name last_name], using: {
+    tsearch: { prefix: true }
+  }
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
