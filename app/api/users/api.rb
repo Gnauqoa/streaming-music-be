@@ -9,6 +9,7 @@ module Users
     mount Playlists
     mount Artists
     mount Search
+    mount Musics
     add_swagger_documentation base_path: '/user_api',
                               hide_documentation_path: true,
                               doc_version: '0.0.1',
