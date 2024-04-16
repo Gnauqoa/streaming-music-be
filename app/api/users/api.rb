@@ -6,7 +6,7 @@ module Users
 
     mount Profile
     mount Users
-
+    mount Playlists
     add_swagger_documentation base_path: '/user_api',
                               hide_documentation_path: true,
                               doc_version: '0.0.1',
