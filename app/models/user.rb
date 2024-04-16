@@ -9,6 +9,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable,
          :omniauthable, :trackable
 
+  has_many :playlists
+
   validates_format_of :email, with: Devise.email_regexp, if: -> { email.present? }
   validates_format_of :username, with: /\A[\w\d_.]*\z/i, if: -> { username.present? }
 
