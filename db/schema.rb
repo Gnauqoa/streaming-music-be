@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_16_085002) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_16_085055) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "artis", force: :cascade do |t|
+  create_table "artists", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.string "avatar_url"
@@ -36,6 +36,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_085002) do
     t.string "thumbnail_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "artist_id"
+    t.index ["artist_id"], name: "index_musics_on_artist_id"
   end
 
   create_table "platforms", force: :cascade do |t|
@@ -49,6 +51,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_085002) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_platforms_on_client_id", unique: true
+  end
+
+  create_table "playlist_musics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "music_id"
+    t.bigint "playlist_id"
+    t.index ["music_id"], name: "index_playlist_musics_on_music_id"
+    t.index ["playlist_id"], name: "index_playlist_musics_on_playlist_id"
+  end
+
+  create_table "playlists", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "thumbnail_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_playlists_on_user_id"
   end
 
   create_table "request_logs", force: :cascade do |t|
@@ -78,4 +99,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_085002) do
     t.string "last_sign_in_ip"
   end
 
+  add_foreign_key "musics", "artists"
+  add_foreign_key "playlist_musics", "musics"
+  add_foreign_key "playlist_musics", "playlists"
+  add_foreign_key "playlists", "users"
 end
