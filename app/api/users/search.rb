@@ -5,21 +5,24 @@ module Users
       params do
         optional :name, type: String, desc: 'Content name'
         optional :type, type: String, desc: 'music | artist | user'
+        optional :page, type: Integer, desc: 'Page number'
+        optional :per_page, type: Integer, desc: 'Per page number'
       end
       get do
         case params[:type]
-        when 'music'
-          musics = Music.where('name LIKE ?', "%#{params[:name]}%")
-          paginated_response(musics)
         when 'artist'
           artists = Artist.where('name LIKE ?', "%#{params[:name]}%")
           paginated_response(artists)
         when 'user'
-          users = User.search_by_fullname(params[:name])
+          users = if params[:name].nil?
+                    User.order(id: :desc)
+                  else
+                    User.search_by_fullname(params[:name])
+                  end
           paginated_response(users)
         else
-          error!('Invalid type', 422)
-        end
+          musics = Music.where('name LIKE ?', "%#{params[:name]}%")
+          paginated_response(musics) end
       end
     end
   end
