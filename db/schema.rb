@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_06_053510) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_16_084840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "blocked_ip_addresses", force: :cascade do |t|
     t.string "ip_address", null: false
     t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "musics", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "source_url"
+    t.string "thumbnail_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
