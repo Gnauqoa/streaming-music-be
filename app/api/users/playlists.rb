@@ -1,6 +1,25 @@
 module Users
   class Playlists < Base
     resources :playlists do
+      desc 'Add Music to Playlist',
+           summary: 'Add Music to Playlist'
+      params do
+        requires :id, type: Integer, desc: 'Playlist id'
+        requires :music_id, type: Integer, desc: 'Music id'
+      end
+      post ':id/music' do
+        playlist = Playlist.find(params[:id])
+        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
+
+        music = Music.find(params[:music_id])
+        return error!([:music_not_found], 401) if music.nil?
+
+        return error!([:music_already_in_playlist], 401) if playlist.playlist_musics.where(music_id: music.id).exists?
+
+        playlist.playlist_musics.create!(music_id: music.id)
+        format_response(playlist, serializer: PlaylistUserSerializer)
+      end
+
       desc 'List Playlists',
            summary: 'List Playlists'
       params do
@@ -22,8 +41,8 @@ module Users
         optional :thumbnail_url, type: String, desc: 'Playlist thumbnail url'
       end
       post do
-        playlist = Playlist.create!(declared(params))
-        format_response(playlist)
+        playlist = current_user.playlists.create!(declared(params))
+        format_response(playlist, serializer: PlaylistUserSerializer)
       end
 
       desc 'Update Playlist',
