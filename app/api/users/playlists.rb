@@ -1,13 +1,33 @@
 module Users
   class Playlists < Base
     resources :playlists do
-      desc 'Add Music to Playlist',
-           summary: 'Add Music to Playlist'
+      desc 'Remove music from Playlist',
+           summary: 'Remove music from Playlist'
       params do
         requires :id, type: Integer, desc: 'Playlist id'
         requires :music_id, type: Integer, desc: 'Music id'
       end
-      post ':id/music' do
+      delete ':id/musics' do
+        playlist = Playlist.find(params[:id])
+        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
+
+        music = Music.find(params[:music_id])
+        return error!([:music_not_found], 401) if music.nil?
+
+        playlist_music = playlist.playlist_musics.find_by(music_id: music.id)
+        return error!([:music_not_in_playlist], 401) if playlist_music.nil?
+
+        playlist_music.destroy
+        format_response(playlist, serializer: PlaylistUserSerializer)
+      end
+
+      desc 'Add music to Playlist',
+           summary: 'Add music to Playlist'
+      params do
+        requires :id, type: Integer, desc: 'Playlist id'
+        requires :music_id, type: Integer, desc: 'Music id'
+      end
+      post ':id/musics' do
         playlist = Playlist.find(params[:id])
         return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
