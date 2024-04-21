@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_171902) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "artist_id"
-    t.integer "like_count", default: 0
+    t.integer "likes_count", default: 0
     t.index ["artist_id"], name: "index_musics_on_artist_id"
   end
 
