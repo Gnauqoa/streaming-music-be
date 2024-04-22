@@ -18,7 +18,7 @@ module Users
         return error!([:music_not_in_playlist], 401) if playlist_music.nil?
 
         playlist_music.destroy
-        format_response(playlist, serializer: PlaylistUserSerializer)
+        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
       end
 
       desc 'Add music to Playlist',
@@ -37,20 +37,7 @@ module Users
         return error!([:music_already_in_playlist], 401) if playlist.playlist_musics.where(music_id: music.id).exists?
 
         playlist.playlist_musics.create!(music_id: music.id)
-        format_response(playlist, serializer: PlaylistUserSerializer)
-      end
-
-      desc 'List Playlists',
-           summary: 'List Playlists'
-      params do
-        optional :page, type: Integer, desc: 'Page number'
-        optional :per_page, type: Integer, desc: 'Per page number'
-      end
-      get do
-        items = Playlist.where(user_id: current_user.id)
-        items = items.order(id: :desc)
-
-        paginated_response(items, serializer: PlaylistUserSerializer)
+        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
       end
 
       desc 'Create Playlist',
@@ -62,7 +49,7 @@ module Users
       end
       post do
         playlist = current_user.playlists.create!(declared(params))
-        format_response(playlist, serializer: PlaylistUserSerializer)
+        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
       end
 
       desc 'Update Playlist',
@@ -78,7 +65,7 @@ module Users
         return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         playlist.update!(declared(params).except(:id))
-        format_response(playlist)
+        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
       end
 
       desc 'Delete Playlist',
@@ -91,19 +78,7 @@ module Users
         return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         playlist.destroy
-        format_response(playlist)
-      end
-
-      desc 'Get Playlist',
-           summary: 'Get Playlist'
-      params do
-        requires :id, type: Integer, desc: 'Playlist id'
-      end
-      get ':id' do
-        playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
-
-        format_response(playlist, serializer: PlaylistSerializer)
+        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
       end
     end
   end
