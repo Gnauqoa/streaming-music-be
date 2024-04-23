@@ -50,15 +50,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_23_125232) do
     t.index ["user_id"], name: "index_liked_musics_on_user_id"
   end
 
-  create_table "liked_playlists", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
-    t.bigint "playlist_id", null: false
-    t.index ["playlist_id"], name: "index_liked_playlists_on_playlist_id"
-    t.index ["user_id"], name: "index_liked_playlists_on_user_id"
-  end
-
   create_table "musics", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -121,6 +112,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_23_125232) do
     t.index ["user_id"], name: "index_user_follows_on_user_id"
   end
 
+  create_table "user_liked_playlists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "playlist_id", null: false
+    t.index ["playlist_id"], name: "index_user_liked_playlists_on_playlist_id"
+    t.index ["user_id"], name: "index_user_liked_playlists_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "username"
@@ -141,12 +141,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_23_125232) do
 
   add_foreign_key "liked_musics", "musics"
   add_foreign_key "liked_musics", "users"
-  add_foreign_key "liked_playlists", "playlists"
-  add_foreign_key "liked_playlists", "users"
   add_foreign_key "musics", "artists"
   add_foreign_key "playlist_musics", "musics"
   add_foreign_key "playlist_musics", "playlists"
   add_foreign_key "playlists", "users"
   add_foreign_key "user_follows", "artists"
   add_foreign_key "user_follows", "users"
+  add_foreign_key "user_liked_playlists", "playlists"
+  add_foreign_key "user_liked_playlists", "users"
 end
