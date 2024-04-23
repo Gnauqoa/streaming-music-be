@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_20_171902) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_23_103228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_171902) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.integer "followers_count", default: 0
   end
 
   create_table "blocked_ip_addresses", force: :cascade do |t|
@@ -38,6 +39,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_171902) do
     t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "liked_musics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "music_id", null: false
+    t.index ["music_id"], name: "index_liked_musics_on_music_id"
+    t.index ["user_id"], name: "index_liked_musics_on_user_id"
   end
 
   create_table "musics", force: :cascade do |t|
@@ -93,13 +103,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_171902) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_likes", force: :cascade do |t|
+  create_table "user_follows", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.bigint "music_id", null: false
-    t.index ["music_id"], name: "index_user_likes_on_music_id"
-    t.index ["user_id"], name: "index_user_likes_on_user_id"
+    t.bigint "artist_id", null: false
+    t.index ["artist_id"], name: "index_user_follows_on_artist_id"
+    t.index ["user_id"], name: "index_user_follows_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -120,10 +130,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_171902) do
     t.string "last_sign_in_ip"
   end
 
+  add_foreign_key "liked_musics", "musics"
+  add_foreign_key "liked_musics", "users"
   add_foreign_key "musics", "artists"
   add_foreign_key "playlist_musics", "musics"
   add_foreign_key "playlist_musics", "playlists"
   add_foreign_key "playlists", "users"
-  add_foreign_key "user_likes", "musics"
-  add_foreign_key "user_likes", "users"
+  add_foreign_key "user_follows", "artists"
+  add_foreign_key "user_follows", "users"
 end
