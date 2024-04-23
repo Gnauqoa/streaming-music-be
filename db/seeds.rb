@@ -18,12 +18,12 @@ playlist_2 = Playlist.create!(name: 'Playlist 2', user: user_2)
 playlist_3 = Playlist.create!(name: 'Playlist 3', user: user_3)
 playlist_4 = Playlist.create!(name: 'Playlist 4', user: user_4)
 
-artist_0 = Artist.create!(name: 'Taylor Swift', description: "Taylor 
+artist_0 = Artist.create!(name: 'Taylor Swift', password: "123123123@q", description: "Taylor 
 Alison Swift is an American singer-songwriter. A subject of widespread public interest, she has influenced the music 
 industry and popular culture through her artistry, especially in songwriting, and entrepreneurship. She is an advocate 
 of artists' rights and women's empowerment.", avatar_url: "https://www.usmagazine.com/wp-content/uploads/2023/10/Taylor-Swifts-Family-Guide-Meet-the-Singers-Supportive-Parents-and-Younger-Brother1.jpg?w=800&h=1421&crop=1&quality=86&strip=all")
 
-music_0 = Music.create!(name: 'Lover', description: "Lover is the seventh studio album by the American 
+music_0 = Music.create!(name: 'Lover', password: "123123123@q", description: "Lover is the seventh studio album by the American 
 singer-songwriter Taylor Swift, released on August 23, 2019, by Republic Records. It is her first album 
 after her departure from Big Machine Records, which caused a public dispute over the ownership of 
 Swift's past albums.",
