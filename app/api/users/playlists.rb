@@ -11,10 +11,7 @@ module Users
         playlist = Playlist.find(params[:id])
         return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
-        music = Music.find(params[:music_id])
-        return error!([:music_not_found], 401) if music.nil?
-
-        playlist_music = playlist.playlist_musics.find_by(music_id: music.id)
+        playlist_music = playlist.playlist_musics.find_by(music_id: params[:music_id])
         return error!([:music_not_in_playlist], 401) if playlist_music.nil?
 
         playlist_music.destroy
@@ -28,13 +25,12 @@ module Users
         requires :music_id, type: Integer, desc: 'Music id'
       end
       post ':id/musics' do
+        return error!([:playlist_not_found], 401) unless UserPolicy.new(current_user:).manage_playlist(params[:id])
+
         playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         music = Music.find(params[:music_id])
-        return error!([:music_not_found], 401) if music.nil?
-
-        return error!([:music_already_in_playlist], 401) if playlist.playlist_musics.where(music_id: music.id).exists?
+        return error!([:music_not_valid], 401) if music.nil? || playlist.playlist_musics.where(music_id: music.id).exists?
 
         playlist.playlist_musics.create!(music_id: music.id)
         format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
@@ -61,8 +57,9 @@ module Users
         optional :thumbnail_url, type: String, desc: 'Playlist thumbnail url'
       end
       put do
+        return error!([:playlist_not_found], 401) unless UserPolicy.new(current_user:).manage_playlist(params[:id])
+
         playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         playlist.update!(declared(params).except(:id))
         format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
@@ -74,8 +71,9 @@ module Users
         requires :id, type: Integer, desc: 'Playlist id'
       end
       delete ':id' do
+        return error!([:playlist_not_found], 401) unless UserPolicy.new(current_user:).manage_playlist(params[:id])
+
         playlist = Playlist.find(params[:id])
-        return error!([:playlist_not_found], 401) if playlist.nil? || playlist.user_id != current_user.id
 
         playlist.destroy
         format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
