@@ -11,7 +11,7 @@ module Artists
 
         helpers do
           def remote_artist
-            env['REMOTE_Artist']
+            env['REMOTE_ARTIST']
           end
 
           def artist_id

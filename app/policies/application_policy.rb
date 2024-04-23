@@ -12,11 +12,12 @@ class ApplicationPolicy
     end
   end
 
-  attr_reader :current_user, :current_agent, :record
+  attr_reader :current_user, :current_artist, :current_agent, :record
 
-  def initialize(current_user: nil, current_agent: nil, record: nil)
+  def initialize(current_user: nil, current_artist: nil, current_agent: nil, record: nil)
     @current_user = current_user
     @current_agent = current_agent
+    @current_artist = current_artist
     @record = record
   end
 
