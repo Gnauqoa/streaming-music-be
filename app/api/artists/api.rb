@@ -6,6 +6,7 @@ module Artists
 
     mount Artists
     mount Musics
+    mount Profile
     add_swagger_documentation base_path: '/artist_api',
                               hide_documentation_path: true,
                               doc_version: '0.0.1',
