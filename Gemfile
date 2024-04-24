@@ -33,15 +33,16 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-rspec', require: false
-  gem 'pry'
 end
 
 group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'rails-erd'
   gem 'spring'
 end
 
@@ -53,33 +54,33 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'activerecord-import', '~> 1.4', '>= 1.4.1'
+gem 'carrierwave', '~> 3.0', '>= 3.0.1'
 gem 'devise'
+gem 'dotenv-rails'
 gem 'draper'
 gem 'dry-monads'
+gem 'eth'
 gem 'grape', '~> 1.6'
 gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-entity'
 gem 'grape-swagger-rails'
+gem 'httparty'
 gem 'jwt'
 gem 'newrelic_rpm'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter2'
+gem 'pg_search', '~> 2.3', '>= 2.3.6'
 gem 'pundit'
-gem 'sprockets-rails'
-gem "rails_admin", "~> 3.0"
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-gem 'sassc-rails'
+gem 'rails_admin', '~> 3.0'
 gem 'rbsecp256k1', '~> 5.1.0'
-gem 'eth'
-gem 'dotenv-rails'
+gem 'sassc-rails'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
-gem 'httparty'
+gem 'sprockets-rails'
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'websocket-client-simple'
-gem 'activerecord-import', '~> 1.4', '>= 1.4.1'
-gem 'pg_search', '~> 2.3', '>= 2.3.6'
-gem 'carrierwave', '~> 3.0', '>= 3.0.1'
 
-gem "image_processing", "~> 1.12"
+gem 'image_processing', '~> 1.12'
