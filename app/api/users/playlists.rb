@@ -10,11 +10,28 @@ module Users
         playlist = Playlist.find(params[:id])
         return error!([:playlist_not_found], 401) if playlist.nil?
 
+        return error!([:playlist_already_liked], 401) if playlist.liked_by_user?(current_user.id)
+
         current_user.user_liked_playlists.create!(playlist:)
         playlist.update(
           likes_count: playlist.likes_count + 1
         )
-        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
+        format_response(playlist, serializer: PlaylistSerializer, scope: { current_user: })
+      end
+      desc 'Unlike Playlist',
+           summary: 'Unlike Playlist'
+      params do
+        requires :id, type: Integer, desc: 'Playlist ID'
+      end
+      delete ':id/like' do
+        user_liked_playlist = current_user.user_liked_playlists.find_by(playlist_id: playlist.id)
+        return error!([:playlist_not_liked], 401) if user_liked_playlist.nil?
+
+        user_liked_playlist.destroy
+        playlist.update(
+          likes_count: playlist.likes_count - 1
+        )
+        format_response(playlist, serializer: PlaylistSerializer, scope: { current_user: })
       end
       desc 'Remove music from Playlist',
            summary: 'Remove music from Playlist'
