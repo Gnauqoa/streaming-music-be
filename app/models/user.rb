@@ -14,7 +14,7 @@ class User < ApplicationRecord
          :omniauthable, :trackable
 
   has_many :playlists
-  has_many :liked_musics
+  has_many :user_liked_musics
   has_many :user_liked_playlists
   has_many :liked_playlists, through: :user_liked_playlists
 
