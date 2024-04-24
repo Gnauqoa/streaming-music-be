@@ -1,6 +1,21 @@
 module Users
   class Playlists < Base
     resources :playlists do
+      desc 'Like Playlist',
+           summary: 'Like Playlist'
+      params do
+        requires :id, type: Integer, desc: 'Playlist ID'
+      end
+      post ':id/like' do
+        playlist = Playlist.find(params[:id])
+        return error!([:playlist_not_found], 401) if playlist.nil?
+
+        current_user.user_liked_playlists.create!(playlist:)
+        playlist.update(
+          likes_count: playlist.likes_count + 1
+        )
+        format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
+      end
       desc 'Remove music from Playlist',
            summary: 'Remove music from Playlist'
       params do
