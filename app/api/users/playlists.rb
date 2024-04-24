@@ -1,6 +1,28 @@
 module Users
   class Playlists < Base
     resources :playlists do
+      desc 'Playlist detail',
+           summary: 'Playlist detail'
+      params do
+        requires :id, type: Integer, desc: 'Playlist ID'
+      end
+      get ':id' do
+        playlist = Playlist.find(params[:id])
+        return error!([:playlist_not_found], 401) if playlist.nil?
+
+        format_response(playlist, serializer: PlaylistDetailSerializer, scope: { current_user: })
+      end
+      desc 'Liked Playlists',
+           summary: 'Liked Playlists'
+      params do
+        optional :page, type: Integer, desc: 'Page number', default: 1
+        optional :per_page, type: Integer, desc: 'Per page number', default: 20
+      end
+      get :liked do
+        playlists = current_user.liked_playlists
+        paginated_response(playlists, each_serializer: PlaylistSerializer, scope: { current_user: })
+      end
+
       desc 'Like Playlist',
            summary: 'Like Playlist'
       params do
