@@ -14,7 +14,10 @@ class User < ApplicationRecord
          :omniauthable, :trackable
 
   has_many :playlists
-  has_many :user_likes
+  has_many :user_liked_musics
+  has_many :user_liked_playlists
+  has_many :liked_playlists, through: :user_liked_playlists, source: :playlist
+
   validates_format_of :email, with: Devise.email_regexp, if: -> { email.present? }
   validates_format_of :username, with: /\A[\w\d_.]*\z/i, if: -> { username.present? }
 

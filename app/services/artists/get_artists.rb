@@ -1,5 +1,5 @@
 module Artists
-  class GetArtist < ServiceBase
+  class GetArtists < ServiceBase
     def initialize; end
 
     def call
