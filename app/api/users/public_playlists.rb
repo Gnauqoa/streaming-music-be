@@ -6,12 +6,19 @@ module Users
       params do
         optional :page, type: Integer, desc: 'Page number'
         optional :per_page, type: Integer, desc: 'Per page number'
+        optional :liked, type: Boolean, desc: 'Get liked playlists', default: false
+        optional :name, type: String, desc: 'Playlist name'
       end
       get do
-        items = Playlist.where(user_id: current_user.id)
+        items = if params[:liked] == true && current_user.present?
+                  current_user.liked_playlists
+                else
+                  Playlist
+                end
+        items = items.where('name ILIKE ?', "%#{params[:name]}%") if params[:name].present?
         items = items.order(id: :desc)
 
-        paginated_response(items, serializer: UserPlaylistSerializer, scope: { current_user: })
+        paginated_response(items, serializer: PlaylistSerializer, scope: { current_user: })
       end
 
       desc 'Get Playlist',

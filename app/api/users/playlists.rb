@@ -12,16 +12,6 @@ module Users
 
         format_response(playlist, serializer: PlaylistDetailSerializer, scope: { current_user: })
       end
-      desc 'Liked Playlists',
-           summary: 'Liked Playlists'
-      params do
-        optional :page, type: Integer, desc: 'Page number', default: 1
-        optional :per_page, type: Integer, desc: 'Per page number', default: 20
-      end
-      get :liked do
-        playlists = current_user.liked_playlists
-        paginated_response(playlists, each_serializer: PlaylistSerializer, scope: { current_user: })
-      end
 
       desc 'Like Playlist',
            summary: 'Like Playlist'
