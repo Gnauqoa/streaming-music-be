@@ -4,6 +4,24 @@ module Users
   class Profile < Base
     namespace :users do
       resources :current do
+        desc 'Get playlists of current user', summary: 'Get playlists of current user'
+        params do
+          optional :page, type: Integer, desc: 'Page number'
+          optional :per_page, type: Integer, desc: 'Per page number'
+          optional :liked, type: Boolean, desc: 'Get liked playlists', default: false
+          optional :name, type: String, desc: 'Playlist name'
+        end
+        get :playlists do
+          items = if params[:liked] == true && current_user.present?
+                    current_user.liked_playlists
+                  else
+                    current_user.playlists
+                  end
+          items = items.where('name ILIKE ?', "%#{params[:name]}%") if params[:name].present?
+
+          paginated_response(items, serializer: PlaylistSerializer)
+        end
+
         desc 'Update password for current user', summary: 'Update password'
         params do
           requires :current_password, type: String, desc: 'Current password'
