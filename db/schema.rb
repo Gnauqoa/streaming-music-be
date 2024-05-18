@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_24_012338) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_18_083529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_012338) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "music_artists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "artist_id", null: false
+    t.bigint "music_id", null: false
+    t.index ["artist_id"], name: "index_music_artists_on_artist_id"
+    t.index ["music_id"], name: "index_music_artists_on_music_id"
+  end
+
   create_table "musics", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -48,9 +57,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_012338) do
     t.string "thumbnail_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "artist_id"
     t.integer "likes_count", default: 0
-    t.index ["artist_id"], name: "index_musics_on_artist_id"
   end
 
   create_table "platforms", force: :cascade do |t|
@@ -140,7 +147,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_012338) do
     t.string "last_sign_in_ip"
   end
 
-  add_foreign_key "musics", "artists"
+  add_foreign_key "music_artists", "artists"
+  add_foreign_key "music_artists", "musics"
   add_foreign_key "playlist_musics", "musics"
   add_foreign_key "playlist_musics", "playlists"
   add_foreign_key "playlists", "users"
