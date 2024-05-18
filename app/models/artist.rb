@@ -8,6 +8,7 @@ class Artist < ApplicationRecord
          :omniauthable, :trackable
 
   has_many :music_artists, dependent: :destroy
+  has_many :musics, through: :music_artists, source: :music
   validates_format_of :email, with: Devise.email_regexp, if: -> { email.present? }
 
   def initialize(*args)
