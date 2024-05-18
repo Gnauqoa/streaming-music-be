@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_18_083529) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_18_095950) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "artists", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.string "avatar_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
@@ -32,6 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_083529) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "followers_count", default: 0
+    t.string "artist_external_id"
+    t.json "images"
+    t.json "genres"
   end
 
   create_table "blocked_ip_addresses", force: :cascade do |t|
@@ -54,10 +56,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_083529) do
     t.string "name"
     t.string "description"
     t.string "source_url"
-    t.string "thumbnail_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "likes_count", default: 0
+    t.string "music_external_id"
+    t.datetime "release_date"
+    t.string "release_date_precision"
+    t.json "images"
   end
 
   create_table "platforms", force: :cascade do |t|
