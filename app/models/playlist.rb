@@ -4,6 +4,10 @@ class Playlist < ApplicationRecord
   has_many :user_liked_playlists, dependent: :destroy
   belongs_to :user
 
+  enum status: {
+    show: 1,
+    hide: 0
+  }
   def liked_by_user?(user_id)
     user_liked_playlists.where(user_id:).exists?
   end
