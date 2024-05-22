@@ -7,10 +7,14 @@ gem "rails", "~> 7.1.3", ">= 7.1.3.3"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
-
+gem 'grape'
+gem 'grape-entity'
+gem "grape-swagger"
+gem 'grape-swagger-rails'
+gem 'grape-swagger-entity'
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
-
+gem 'pg_search'
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -67,3 +71,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
+
+gem "devise", "~> 4.9"
