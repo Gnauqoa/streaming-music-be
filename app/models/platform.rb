@@ -22,24 +22,24 @@ class Platform < ApplicationRecord
     "Sign this message to generate your #{name} Key. This key lets the application decrypt your balance on #{name}.\n\nIMPORTANT:Only sign this message if you trust the application;"
   end
 
-  rails_admin do
-    list do
-      include_all_fields
-      field :scope, :pg_string_array
-    end
+  # rails_admin do
+  #   list do
+  #     include_all_fields
+  #     field :scope, :pg_string_array
+  #   end
 
-    show do
-      include_all_fields
-      field :hosts, :pg_string_array
-      field :scope, :pg_string_array
-    end
+  #   show do
+  #     include_all_fields
+  #     field :hosts, :pg_string_array
+  #     field :scope, :pg_string_array
+  #   end
 
-    edit do
-      include_all_fields
-      field :hosts, :pg_string_array
-      field :scope, :pg_string_array
-    end
-  end
+  #   edit do
+  #     include_all_fields
+  #     field :hosts, :pg_string_array
+  #     field :scope, :pg_string_array
+  #   end
+  # end
 
   private
 
