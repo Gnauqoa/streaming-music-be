@@ -30,7 +30,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_114826) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.integer "followers_count", default: 0
     t.string "artist_external_id"
     t.json "images"
     t.json "genres"
@@ -110,15 +109,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_114826) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_follows", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
-    t.bigint "artist_id", null: false
-    t.index ["artist_id"], name: "index_user_follows_on_artist_id"
-    t.index ["user_id"], name: "index_user_follows_on_user_id"
-  end
-
   create_table "user_liked_musics", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -160,8 +150,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_114826) do
   add_foreign_key "playlist_musics", "musics"
   add_foreign_key "playlist_musics", "playlists"
   add_foreign_key "playlists", "users"
-  add_foreign_key "user_follows", "artists"
-  add_foreign_key "user_follows", "users"
   add_foreign_key "user_liked_musics", "musics"
   add_foreign_key "user_liked_musics", "users"
   add_foreign_key "user_liked_playlists", "playlists"
