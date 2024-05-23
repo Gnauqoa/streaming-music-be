@@ -6,9 +6,18 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   mount V1::Api => '/api/v1'
 
-  mount GrapeSwaggerRails::Engine => '/api-docs'
+  mount GrapeSwaggerRails::Engine => '/api-docs-v1'
 
+  # devise_for :admin_users, controllers: {
+  #   sessions: 'admin_users/sessions'
+  # }, path: 'auth'
 
+  # devise_for :users,
+  #            only: :omniauth_callbacks,
+  #            controllers: {
+  #              omniauth_callbacks: 'users/omniauth_callbacks'
+  #            }
+  # get '/users/token', to: 'users#token'
 
   # Defines the root path route ("/")
   # root "posts#index"

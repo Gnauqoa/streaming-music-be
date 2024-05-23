@@ -6,20 +6,12 @@ GrapeSwaggerRails.options.api_key_type          = 'header'
 GrapeSwaggerRails.options.hide_url_input        = true
 
 GrapeSwaggerRails.options.before_action do
-  authenticate_or_request_with_http_basic do |username, password|
-    username == 'streaming' && password == '123456'
+  GrapeSwaggerRails.options.app_url = request.protocol + request.host_with_port
+  case request.path
+  when '/api-docs-v1/'
+    GrapeSwaggerRails.options.url = '/api/v1/swagger_doc.json'
+    authenticate_or_request_with_http_basic do |username, password|
+      username == 'streaming' && password == '123456'
+    end
   end
-  # GrapeSwaggerRails.options.app_url = request.protocol + request.host_with_port
-  # case request.path
-  # when '/user-api-docs/'
-  #   GrapeSwaggerRails.options.url = '/user_api/swagger_doc.json'
-  #   authenticate_or_request_with_http_basic do |username, password|
-  #     username == 'streaming' && password == '123456'
-  #   end
-  # when '/artist-api-docs/'
-  #   GrapeSwaggerRails.options.url = '/artist_api/swagger_doc.json'
-  #   authenticate_or_request_with_http_basic do |username, password|
-  #     username == 'streaming' && password == '123456'
-  #   end
-  # end
 end
