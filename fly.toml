@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for streaming-music-be on 2024-05-23T10:27:56+07:00
+# fly.toml app configuration file generated for streaming-music-be on 2024-05-23T11:17:08+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -10,7 +10,7 @@ console_command = '/rails/bin/rails console'
 [build]
 
 [deploy]
-  release_command = "./bin/rails db:prepare"
+  release_command = './bin/rails db:prepare'
 
 [http_service]
   internal_port = 3000
@@ -36,9 +36,9 @@ console_command = '/rails/bin/rails console'
       X-Forwarded-Proto = 'https'
 
 [[vm]]
-  memory = '2gb'
+  memory = '1gb'
   cpu_kind = 'shared'
-  cpus = 2
+  cpus = 1
 
 [[statics]]
   guest_path = '/rails/public'
