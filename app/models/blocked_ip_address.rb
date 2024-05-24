@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class BlockedIpAddress < ApplicationRecord
-  belongs_to :agent
-
   validates :ip_address, presence: true, uniqueness: true
 
   def self.blocked?(ip_address)
