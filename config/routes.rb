@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-  mount V1::Api => '/api/v1'
+  mount V1::Users::Api => '/api/v1/users'
 
-  mount GrapeSwaggerRails::Engine => '/api-docs-v1'
+  mount GrapeSwaggerRails::Engine => '/v1-user-api-docs'
 
   # devise_for :admin_users, controllers: {
   #   sessions: 'admin_users/sessions'
