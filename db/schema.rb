@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_18_114826) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_24_171050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_114826) do
     t.string "artist_external_id"
     t.json "images"
     t.json "genres"
+    t.integer "followers_count", default: 0
   end
 
   create_table "blocked_ip_addresses", force: :cascade do |t|
