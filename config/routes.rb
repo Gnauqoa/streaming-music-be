@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
   mount V1::Users::Api => '/api/v1'
+  mount V1::Artists::Api => '/api/v1'
 
   mount GrapeSwaggerRails::Engine => '/v1-user-api-docs'
+  mount GrapeSwaggerRails::Engine => '/v1-artist-api-docs', as: 'artist_swagger'
 
   # devise_for :admin_users, controllers: {
   #   sessions: 'admin_users/sessions'

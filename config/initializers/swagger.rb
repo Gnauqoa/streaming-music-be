@@ -13,5 +13,10 @@ GrapeSwaggerRails.options.before_action do
     authenticate_or_request_with_http_basic do |username, password|
       username == 'streaming' && password == '123456'
     end
+  when '/v1-artist-api-docs/'
+    GrapeSwaggerRails.options.url = '/api/v1/artist_swagger_doc.json'
+    authenticate_or_request_with_http_basic do |username, password|
+      username == 'streaming' && password == '123456'
+    end
   end
 end
