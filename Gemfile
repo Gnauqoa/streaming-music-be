@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.1.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.3", ">= 7.1.3.3"
+gem 'rails', '~> 7.0'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -12,6 +12,8 @@ gem 'grape-entity'
 gem "grape-swagger"
 gem 'grape-swagger-rails'
 gem 'grape-swagger-entity'
+gem 'active_model_serializers'
+gem 'activerecord-import'
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 gem 'pg_search'

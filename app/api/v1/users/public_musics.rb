@@ -7,7 +7,7 @@ module V1
           requires :id, type: Integer, desc: 'Music ID'
         end
         get ':id' do
-          music = Music.find_by(id: params[:id])
+          music = Music.find(params[:id])
           return error!([:music_not_found], 404) if music.nil?
 
           format_response(music, serializer: MusicSerializer, scope: { current_user: })
