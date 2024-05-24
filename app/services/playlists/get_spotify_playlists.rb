@@ -14,7 +14,7 @@ module Playlists
       artists_clone = 0
       musics_clone = 0
       playlist_clone = 0
-      res = HTTParty.get("https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=playlist&limit=#{limit}&offset=1", headers:)
+      res = HTTParty.get("https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=playlist&limit=#{limit}&offset=1", headers: headers)
       res['playlists']['items'].map do |playlist|
         result = CreateSpotifyPlaylist.new(playlist:, access_token:).call
         artists_clone += result[:artists_clone]

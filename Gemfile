@@ -17,6 +17,8 @@ gem 'activerecord-import'
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 gem 'pg_search'
+gem 'dry-monads'
+gem 'httparty'
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 gem "rack-cors"
