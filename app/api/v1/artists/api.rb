@@ -2,7 +2,12 @@ module V1
   module Artists
     class Api < Grape::API
       format :json
-
+      mount PublicArtist
+      mount Artists
+      mount Profile
+      mount Musics
+      mount ::V1::Users::PublicMusics
+      mount ::V1::Users::PublicPlaylists
       add_swagger_documentation base_path: '/api/v1',
                                 hide_documentation_path: true,
                                 mount_path: "artist_swagger_doc",
