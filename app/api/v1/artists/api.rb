@@ -8,9 +8,8 @@ module V1
       mount Musics
       mount ::V1::Users::PublicMusics
       mount ::V1::Users::PublicPlaylists
-      add_swagger_documentation base_path: '/api/v1',
-                                hide_documentation_path: true,
-                                mount_path: "artist_swagger_doc",
+      add_swagger_documentation hide_documentation_path: true,
+                                mount_path: "/artist_swagger_doc_v1",
                                 doc_version: '0.0.1',
                                 api_version: "v1",
                                 info: {
