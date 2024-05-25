@@ -19,8 +19,7 @@ module Users
     end
 
     def generate_token
-      puts private_key
-      token = JWT.encode(user.decorate.jwt_payload, private_key, 'RS256')
+      token = JWT.encode(user.decorate.jwt_payload, private_key, 'RS256') 
       Success(token)
     end
   end
