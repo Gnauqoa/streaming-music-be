@@ -38,17 +38,14 @@ module Middlewares
 
     class JwtRequest < Rack::Auth::AbstractRequest
       def bearer?
-        puts "bearer #{scheme} #{credentials}"
         scheme == 'bearer' && credentials.present? && credentials.length == 2
       end
 
       def public_key
-        puts "public_key123"
         OpenSSL::PKey::RSA.new(ENV['USER_JWT_PUBLIC_KEY'].gsub('\\n', "\n"))
       end
 
       def credentials
-        puts "credentials123"
         @credentials ||= JWT.decode(params, public_key, true, algorithm: 'RS256')
       end
 
