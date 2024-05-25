@@ -19,7 +19,6 @@ module V1
                                 info: {
                                   title: 'User API v1',
                                 },
-                                # endpoint_auth_wrapper: Middlewares::JwtAuthentication,
                                 array_use_braces: true
 
     end
