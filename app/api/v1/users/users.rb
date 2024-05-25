@@ -79,7 +79,7 @@ module V1
             verify_recaptcha = VerifyRecaptcha.call(token: params[:recaptcha_token])
             return error!(failure_response(*verify_recaptcha.failure), 422) if verify_recaptcha.failure?
           end
-          @result = ::Users::SignIn.new(
+          @result = SignIn.new(
             email: params[:email],
             password: params[:password],
             request: env['warden'].request
