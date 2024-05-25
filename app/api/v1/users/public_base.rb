@@ -8,11 +8,11 @@ module V1
 
         subclass.instance_eval do
           include BaseHelper
-          use Middlewares::PublicAuthentication
+          use Middlewares::UserPublicAuthentication
 
           helpers do
             def client_id_key
-              Middlewares::JwtAuthentication::CLIENT_ID_KEYS.detect { |key| env.key?(key) }
+              Middlewares::UserPublicAuthentication::CLIENT_ID_KEYS.detect { |key| env.key?(key) }
             end
 
             def platform
@@ -24,7 +24,7 @@ module V1
             end
 
             def host_key
-              Middlewares::JwtAuthentication::HOST_KEYS.detect { |key| @env.key?(key) }
+              Middlewares::UserPublicAuthentication::HOST_KEYS.detect { |key| @env.key?(key) }
             end
 
             def client_ip
@@ -33,6 +33,23 @@ module V1
 
             def host
               @env[host_key]
+            end
+
+            def remote_user
+              env['REMOTE_USER'] if env['REMOTE_USER'].present?
+            end
+
+            def user_id
+              return nil unless remote_user
+
+              remote_user['id']
+            end
+
+            def current_user
+              return @current_user if defined? @current_user
+              return nil if user_id.nil?
+
+              @current_user = User.find(user_id)
             end
           end
         end

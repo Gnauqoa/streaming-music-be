@@ -29,7 +29,7 @@ module V1
         end
         get ':id' do
           playlist = Playlist.find_by(id: params[:id])
-          return error!([:playlist_not_found], 404) if playlist.nil? || playlist.user_id != current_user.id
+          return error!([:playlist_not_found], 404) if playlist.nil? || (current_user.present? && playlist.user_id != current_user.id)
 
           format_response(playlist, serializer: PlaylistSerializer, scope: { current_user: })
         end
