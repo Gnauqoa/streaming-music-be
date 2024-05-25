@@ -5,7 +5,7 @@ module V1
         desc 'Get user profile', summary: 'Get current user'
         params do
           optional :name, type: String, desc: 'Content name'
-          optional :type, type: String, desc: 'music | artist | user'
+          optional :type, type: String, desc: 'music | artist | user', default: 'music', values: %w[music artist user]
           optional :page, type: Integer, desc: 'Page number'
           optional :per_page, type: Integer, desc: 'Per page number'
         end
