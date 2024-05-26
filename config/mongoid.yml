@@ -281,7 +281,7 @@ production:
   clients:
     default:
       database: streaming_music
-      uri: mongodb://user:password@mongodb.domain.com:27017/streaming_music_be_development
+      uri: <%= ENV['MONGODB_URL'] %>
       options:
 test:
   clients:
