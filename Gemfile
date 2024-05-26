@@ -17,6 +17,7 @@ gem 'dotenv-rails'
 gem 'jwt'
 gem 'draper'
 gem 'mongoid'
+gem 'rails-admin'
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 gem 'pg_search'

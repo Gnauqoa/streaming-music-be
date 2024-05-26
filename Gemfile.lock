@@ -286,6 +286,7 @@ GEM
       activesupport (= 7.1.3.3)
       bundler (>= 1.15.0)
       railties (= 7.1.3.3)
+    rails-admin (0.0.0)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
@@ -394,6 +395,7 @@ DEPENDENCIES
   pundit
   rack-cors
   rails (~> 7.0)
+  rails-admin
   redis (>= 4.0.1)
   selenium-webdriver
   sprockets-rails
