@@ -94,6 +94,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
+    bson (5.0.0)
     builder (3.2.4)
     capybara (3.40.0)
       addressable
@@ -208,6 +209,12 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.23.1)
+    mongo (2.20.0)
+      bson (>= 4.14.1, < 6.0.0)
+    mongoid (9.0.0)
+      activemodel (>= 5.1, < 7.2, != 7.0.0)
+      concurrent-ruby (>= 1.0.5, < 2.0)
+      mongo (>= 2.18.0, < 3.0.0)
     msgpack (1.7.2)
     multi_json (1.15.0)
     multi_xml (0.7.1)
@@ -379,6 +386,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   jwt
+  mongoid
   omniauth (~> 2.1)
   pg (~> 1.1)
   pg_search
