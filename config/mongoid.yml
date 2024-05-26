@@ -277,7 +277,12 @@ development:
     # validate the paramters and raise an error if they are invalid.
     # validate_update_replace: false
 
-
+production:
+  clients:
+    default:
+      database: streaming_music
+      uri: mongodb://user:password@mongodb.domain.com:27017/streaming_music_be_development
+      options:
 test:
   clients:
     default:
