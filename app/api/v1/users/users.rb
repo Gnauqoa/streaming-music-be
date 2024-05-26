@@ -60,13 +60,7 @@ module V1
           "success"
         end
         desc 'Sign In',
-            summary: 'Sign In',
-            headers: {
-              'Client-ID' => {
-                description: 'The platform client ID',
-                required: true
-              }
-            }
+            summary: 'Sign In'
         params do
           requires :email, type: String,
                           desc: 'Email or username'

@@ -4,6 +4,15 @@ module V1
     class Profile < Base
       namespace :users do
         resources :current do
+          desc 'Get notifications of current user', summary: 'Get notifications of current user'
+          params do
+            optional :page, type: Integer, desc: 'Page number'
+            optional :per_page, type: Integer, desc: 'Per page number'
+          end
+          get :notifications do
+            items = current_user.notifications
+            paginated_response(items, serializer: NotificationSerializer)
+          end
           desc 'Get playlists of current user', summary: 'Get playlists of current user'
           params do
             optional :page, type: Integer, desc: 'Page number'
