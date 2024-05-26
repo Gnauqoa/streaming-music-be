@@ -42,7 +42,9 @@ class User < ApplicationRecord
       end
     end
   end
-
+  def notifications 
+    Notification.where(:user_id => self.id)
+  end
   def fullname
     "#{first_name} #{last_name}"
   end
