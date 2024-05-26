@@ -1,3 +1,7 @@
+production:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URL'] %>
 development:
   # Configure available database clients. (required)
   clients:
@@ -277,12 +281,7 @@ development:
     # validate the paramters and raise an error if they are invalid.
     # validate_update_replace: false
 
-production:
-  clients:
-    default:
-      database: streaming_music
-      uri: <%= ENV['MONGODB_URL'] %>
-      options:
+
 test:
   clients:
     default:
