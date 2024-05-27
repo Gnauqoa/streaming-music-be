@@ -6,7 +6,7 @@ class Artist < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
          :omniauthable, :trackable
-
+  has_many :post_music_requests, dependent: :destroy
   has_many :music_artists, dependent: :destroy
   has_many :musics, through: :music_artists, source: :music
   validates_format_of :email, with: Devise.email_regexp, if: -> { email.present? }
