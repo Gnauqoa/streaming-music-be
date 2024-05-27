@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_24_171050) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_27_051255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,6 +99,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_171050) do
     t.integer "total_tracks"
     t.integer "status", default: 1
     t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
+
+  create_table "post_music_requests", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "status", default: 1
+    t.bigint "artist_id"
+    t.string "music_external_id"
+    t.string "source_url"
+    t.string "release_date_precision"
+    t.datetime "release_date"
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "request_logs", force: :cascade do |t|
