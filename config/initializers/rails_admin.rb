@@ -34,7 +34,9 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
-
+    collection :approve_post_music_request do
+      only AdminUser
+    end
     ## With an audit adapter, you can add:
     # history_index
     # history_show
