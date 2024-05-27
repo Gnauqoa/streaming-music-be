@@ -17,7 +17,7 @@ gem 'dotenv-rails'
 gem 'jwt'
 gem 'draper'
 gem 'mongoid'
-gem 'rails-admin'
+gem 'rails_admin'
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 gem 'pg_search'
@@ -85,3 +85,4 @@ gem "dockerfile-rails", ">= 1.6", :group => :development
 gem "devise", "~> 4.9"
 
 gem "omniauth", "~> 2.1"
+gem "sassc-rails"
