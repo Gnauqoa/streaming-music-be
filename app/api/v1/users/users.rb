@@ -52,20 +52,13 @@ module V1
             error!(failure_response(*result.failure), 422)
           end
         end
-        desc "Test",
-              summary: 'Test'
-        params do
-        end
-        get :test do
-          "success"
-        end
+      
         desc 'Sign In',
             summary: 'Sign In'
         params do
-          requires :email, type: String,
+          requires :account, type: String,
                           desc: 'Email or username'
           requires :password, type: String, desc: 'The login password'
-          optional :recaptcha_token, type: String, desc: 'recaptcha token'
         end
 
         post :sign_in do
@@ -74,7 +67,7 @@ module V1
             return error!(failure_response(*verify_recaptcha.failure), 422) if verify_recaptcha.failure?
           end
           @result = SignIn.new(
-            email: params[:email],
+            email: params[:account],
             password: params[:password],
             request: env['warden'].request
           ).call
