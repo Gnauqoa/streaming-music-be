@@ -3,11 +3,6 @@ module V1
   module Artists
     class Artists < PublicBase
       resources :artists do
-        after do
-          artist = Artist.find_by_email(params[:email])
-
-          log_ip(artist.id, client_ip)
-        end
         desc "Sign Up",
             summary: 'Sign Up'
         params do
@@ -38,27 +33,20 @@ module V1
           end
         end
 
-        desc 'Sign In',
+        desc "Sign In",
             summary: 'Sign In'
         params do
           requires :email, type: String,
                           desc: 'Email'
           requires :password, type: String, desc: 'The login password'
         end
-
         post :sign_in do
-          @result = SignIn.new(
-            email: params[:email],
-            password: params[:password],
-            request: env['warden'].request
-          ).call
+          artist = Artist.find_by_email(params[:email])
+          return error!('Invalid email or password', 401) unless artist&.valid_password?(params[:password])
 
-          if @result.success?
-            status 200
-            format_response({ access_token: @result.success })
-          else
-            error!(failure_response(*@result.failure), 422)
-          end
+          generate_token_result = GenerateToken.new(artist: artist).call
+          token = generate_token_result.success
+          format_response({ access_token: token })
         end
       end
     

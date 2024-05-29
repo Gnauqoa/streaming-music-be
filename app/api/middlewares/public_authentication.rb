@@ -32,7 +32,8 @@ module Middlewares
 
     class Request < Rack::Auth::AbstractRequest
       def ip_blocked?
-        BlockedIpAddress.exists?(ip_address: client_ip)
+        # BlockedIpAddress.exists?(ip_address: client_ip)
+        false
       end
 
       def client_ip

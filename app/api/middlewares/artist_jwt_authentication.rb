@@ -14,6 +14,9 @@ module Middlewares
       return unauthorized('Authentication required') unless auth.valid?
       return unauthorized('Authentication required') unless auth.bearer?
       return unauthorized('Invalid authentication') unless auth.artist_data
+      if auth.artist_data.present? && !auth.artist_data.active 
+        return unauthorized('Inactive user')
+      end
 
       env['REMOTE_ARTIST'] = auth.artist_data
       @app.call(env)
