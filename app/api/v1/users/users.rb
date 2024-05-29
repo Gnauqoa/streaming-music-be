@@ -23,12 +23,12 @@ module V1
           requires :birth, type: Date, desc: 'Birth date'
         end
         post do
+          return error!("Email already exists", 422) if User.find_by_email(params[:email])
           user_params = declared(params, include_missing: false)
-          return error!(failure_response(:phone, 'Phone number already exists'), 422) if User.find_by(phone: user_params[:phone]).present?
 
           result = Create.new(
             params: user_params.except(:recaptcha_token),
-            platform:
+
           ).call
 
           if result.success?
