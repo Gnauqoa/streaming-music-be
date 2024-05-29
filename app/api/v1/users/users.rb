@@ -12,13 +12,7 @@ module V1
         # end
 
         desc 'Register User',
-            summary: 'Register',
-            headers: {
-              'Client-ID' => {
-                description: 'The platform client ID',
-                required: true
-              }
-            }
+            summary: 'Register'
         params do
           optional :username, type: String, regexp: /\A[a-z0-9_]{4,16}\z/, desc: 'Username'
           requires :email, type: String, regexp: URI::MailTo::EMAIL_REGEXP,
