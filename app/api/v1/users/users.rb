@@ -18,7 +18,9 @@ module V1
           requires :email, type: String, regexp: URI::MailTo::EMAIL_REGEXP,
                           desc: 'The unique login email'
           requires :password, type: String, desc: 'The login password'
-          requires :fullname, type: String, desc: 'Fullname'
+          requires :first_name, type: String, desc: 'First name'
+          requires :last_name, type: String, desc: 'Last name'
+          requires :birth, type: Date, desc: 'Birth date'
         end
         post do
           user_params = declared(params, include_missing: false)
