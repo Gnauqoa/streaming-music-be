@@ -25,9 +25,6 @@ module V1
                           desc: 'The unique login email'
           requires :password, type: String, desc: 'The login password'
           requires :fullname, type: String, desc: 'Fullname'
-          requires :phone, type: String, desc: 'Phone number'
-          optional :referral_code, type: String, desc: 'code of referrer'
-          optional :recaptcha_token, type: String, desc: 'recaptcha token'
         end
         post do
           if ENV['recaptcha_on'].present?
