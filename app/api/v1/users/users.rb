@@ -27,11 +27,6 @@ module V1
           requires :fullname, type: String, desc: 'Fullname'
         end
         post do
-          if ENV['recaptcha_on'].present?
-            verify_recaptcha = VerifyRecaptcha.call(token: params[:recaptcha_token])
-            return error!(failure_response(*verify_recaptcha.failure), 422) if verify_recaptcha.failure?
-          end
-
           user_params = declared(params, include_missing: false)
           return error!(failure_response(:phone, 'Phone number already exists'), 422) if User.find_by(phone: user_params[:phone]).present?
 
@@ -59,10 +54,6 @@ module V1
         end
 
         post :sign_in do
-          if ENV['recaptcha_on'].present?
-            verify_recaptcha = VerifyRecaptcha.call(token: params[:recaptcha_token])
-            return error!(failure_response(*verify_recaptcha.failure), 422) if verify_recaptcha.failure?
-          end
           @result = SignIn.new(
             email: params[:account],
             password: params[:password],
