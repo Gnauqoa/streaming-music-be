@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MusicSerializer < ActiveModel::Serializer
-  attributes :id, :name, :likes_count, :liked, :source_url, :created_at, :updated_at
+  attributes :id, :name, :likes_count, :images, :liked, :source_url, :created_at, :updated_at
   has_many :artists, serializer: ArtistSummarizedSerializer
   def liked
     return false if scope.nil? || scope[:current_user].nil?
