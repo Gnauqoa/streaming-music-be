@@ -1,10 +1,10 @@
 module V1
   module Musics
     class CreateSpotifyMusic < ServiceBase
-      attr_reader :track_id, :access_token
+      attr_reader :track, :access_token
 
-      def initialize(track_id:, access_token:)
-        @track_id = track_id
+      def initialize(track:, access_token:)
+        @track = track
         @access_token = access_token
       end
 
@@ -12,7 +12,6 @@ module V1
         headers = {
           'Authorization' => "Bearer #{access_token}"
         }
-        track = HTTParty.get("https://api.spotify.com/v1/tracks/#{track_id}", headers:)
 
         music = Music.find_by(music_external_id: track['id'])
         artists_clone = 0
@@ -23,7 +22,7 @@ module V1
             music_external_id: track['id'],
             source_url: track['preview_url'],
             description: '',
-            images: track['images'],
+            images: track['album']['images'],
             release_date: track['release_date'],
             release_date_precision: track['release_date_precision']
           )
@@ -34,7 +33,7 @@ module V1
             music_external_id: track['id'],
             source_url: track['preview_url'],
             description: '',
-            images: track['images'],
+            images: track['album']['images'],
             release_date: track['release_date'],
             release_date_precision: track['release_date_precision']
           )
