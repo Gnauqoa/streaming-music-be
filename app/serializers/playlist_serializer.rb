@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PlaylistSerializer < ActiveModel::Serializer
-  attributes :id, :name, :user, :liked, :likes_count, :created_at, :updated_at
+  attributes :id, :name, :user, :description, :liked, :musics, :likes_count, :created_at, :updated_at
 
   def liked
     return false if scope.nil? || scope[:current_user].nil?

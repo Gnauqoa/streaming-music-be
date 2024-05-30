@@ -72,12 +72,15 @@ module V1
         desc 'Create Playlist',
             summary: 'Create Playlist'
         params do
-          requires :name, type: String, desc: 'Playlist name'
+          optional :name, type: String, desc: 'Playlist name'
           optional :description, type: String, desc: 'Playlist description'
-          optional :thumbnail_url, type: String, desc: 'Playlist thumbnail url'
         end
         post do
-          playlist = current_user.playlists.create!(declared(params))
+          if params[:name].nil? || params[:name].empty?
+            playlist = current_user.playlists.create!(name: "Playlist #{current_user.playlists.count + 1}")
+          else
+            playlist = current_user.playlists.create!(declared(params))
+          end
           format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
         end
 
