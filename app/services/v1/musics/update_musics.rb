@@ -12,8 +12,9 @@ module V1
         Music.all.each do |music|
           new_muisc = HTTParty.get("https://api.spotify.com/v1/tracks/#{music.music_external_id}", headers:)
           music.update!(
-            images: new_muisc['album']['images']
-            )
+            images: new_muisc['album']['images'],
+            duration_ms: new_muisc['duration_ms']
+          )
         end
       end
     end
