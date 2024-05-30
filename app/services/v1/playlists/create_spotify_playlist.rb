@@ -39,7 +39,7 @@ module V1
           )
         end
         playlist_detail['tracks']['items'].each do |track|
-          result = Musics::CreateSpotifyMusic.new(track_id: track['track']['id'], access_token:).call
+          result = Musics::CreateSpotifyMusic.new(track: track['track'], access_token:).call
           artists_clone += result[:artists_clone]
           musics_clone += 1 if result[:new_music]
           PlaylistMusic.create!(playlist_id: current_playlist.id, music_id: result[:music].id) if PlaylistMusic.find_by(playlist_id: current_playlist.id, music_id: result[:music].id).nil?
