@@ -2,7 +2,12 @@
 
 class PlaylistSerializer < ActiveModel::Serializer
   attributes :id, :name, :user, :description, :image_url, :liked, :musics, :likes_count, :created_at, :updated_at
-
+  def image_url
+    if object.images.present?
+      return object.images[0]['url']
+    end
+    return "https://i.scdn.co/image/ab67616d0000b27304210aa081c36ce07355679c"
+  end
   def liked
     return false if scope.nil? || scope[:current_user].nil?
 
