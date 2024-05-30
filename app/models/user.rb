@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
   has_many :playlists
   has_many :user_liked_musics
+  has_many :liked_musics, through: :user_liked_musics, source: :music
   has_many :user_liked_playlists
   has_many :liked_playlists, through: :user_liked_playlists, source: :playlist
 
