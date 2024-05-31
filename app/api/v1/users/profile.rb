@@ -4,6 +4,15 @@ module V1
     class Profile < Base
       namespace :users do
         resources :current do
+          desc 'Get liked music', summary: 'Get liked music'
+          params do
+            optional :page, type: Integer, desc: 'Page number'
+            optional :per_page, type: Integer, desc: 'Per page number'
+          end
+          get "music/liked" do
+            musics = current_user.liked_musics
+            paginated_response(musics, each_serializer: MusicSerializer, scope: { current_user: })  
+          end
           desc 'Get notifications of current user', summary: 'Get notifications of current user'
           params do
             optional :page, type: Integer, desc: 'Page number'

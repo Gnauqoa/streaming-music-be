@@ -2,16 +2,6 @@ module V1
   module Users
     class Musics < Base
       resources :musics do
-        desc 'Get musics liked',
-              summary: 'Get musics liked by user'
-        params do
-          optional :page, type: Integer, desc: 'Page number'
-          optional :per_page, type: Integer, desc: 'Per page number'
-        end
-        get :liked do
-          musics = current_user.liked_musics
-          paginated_response(musics, each_serializer: MusicSerializer, scope: { current_user: })
-        end
         desc 'Like music'
         params do
           requires :id, type: Integer, desc: 'Music ID'
