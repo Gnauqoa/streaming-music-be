@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MusicSerializer < ActiveModel::Serializer
-  attributes :id, :name, :likes_count, :image_url, :liked, :duration_ms, :source_url, :created_at, :updated_at
+  attributes :id, :name, :likes_count, :image_url, :liked, :artists, :duration_ms, :source_url, :created_at, :updated_at
   has_many :artists, serializer: ArtistSummarizedSerializer
   def image_url
     if object.images.present?
