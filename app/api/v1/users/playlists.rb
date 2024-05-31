@@ -77,7 +77,8 @@ module V1
         end
         post do
           if params[:name].nil? || params[:name].empty?
-            playlist = current_user.playlists.create!(name: "Playlist #{current_user.playlists.count + 1}")
+            index = current_user.playlists.count + 1
+            playlist = current_user.playlists.create!(name: "Playlist #{index}", description: "Playlist num #{index}")
           else
             playlist = current_user.playlists.create!(declared(params))
           end

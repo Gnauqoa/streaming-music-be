@@ -9,7 +9,7 @@ module V1
             optional :page, type: Integer, desc: 'Page number'
             optional :per_page, type: Integer, desc: 'Per page number'
           end
-          get "music/liked" do
+          get "musics/liked" do
             musics = current_user.liked_musics
             paginated_response(musics, each_serializer: MusicSerializer, scope: { current_user: })  
           end
