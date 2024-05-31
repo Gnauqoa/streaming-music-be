@@ -8,7 +8,7 @@ module V1
           optional :type, type: String, desc: 'music | artist | user | playlist', default: 'music', values: %w[music artist user playlist]
           optional :page, type: Integer, desc: 'Page number'
           optional :per_page, type: Integer, desc: 'Per page number'
-          optional :category, type: String, desc: 'Category name', values: %w[hot new]
+          optional :category, type: String, desc: 'Category name', values: %w[hot new default], default: 'default'
         end
         get do
           case params[:type]
@@ -23,7 +23,7 @@ module V1
                     end
             paginated_response(users)
           when 'playlist'
-            playlists = Playlist.where('name LIKE ?', "%#{params[:name]}%")
+            playlists = Playlist.where('lower(name) LIKE ?', "%#{params[:name].downcase}%")
             if params[:category] == 'hot'
               playlists = playlists.order(likes_count: :desc)
             elsif params[:category] == 'new'
@@ -31,7 +31,7 @@ module V1
             end
             paginated_response(playlists)
           else
-            musics = Music.where('name LIKE ?', "%#{params[:name]}%")
+            musics = Music.where('lower(name) LIKE ?', "%#{params[:name].downcase}%")
             if params[:category] == 'hot'
               musics = musics.order(likes_count: :desc)
             elsif params[:category] == 'new'
