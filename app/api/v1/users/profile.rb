@@ -16,7 +16,7 @@ module V1
           desc 'Get notifications of current user', summary: 'Get notifications of current user'
           params do
             optional :page, type: Integer, desc: 'Page number'
-            optional :per_page, type: Integer, desc: 'Per page number'
+            optional :per_page, type: Integer, desc: 'Per page number', default: 50
           end
           get :notifications do
             items = current_user.notifications

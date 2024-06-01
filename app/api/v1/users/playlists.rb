@@ -95,16 +95,16 @@ module V1
           requires :id, type: Integer, desc: 'Playlist id'
           optional :name, type: String, desc: 'Playlist name'
           optional :description, type: String, desc: 'Playlist description'
-          optional :thumbnail_url, type: String, desc: 'Playlist thumbnail url'
+
         end
-        put do
+        put ':id' do
           playlist = Playlist.find(params[:id])
           return error!([:playlist_not_found], 404) if playlist.nil? || playlist.user_id != current_user.id
 
           playlist = Playlist.find(params[:id])
 
           playlist.update!(declared(params).except(:id))
-          format_response(playlist, serializer: UserPlaylistSerializer, scope: { current_user: })
+          format_response(playlist, serializer: PlaylistSerializer, scope: { current_user: })
         end
 
         desc 'Delete Playlist',
