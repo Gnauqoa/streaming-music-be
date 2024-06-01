@@ -11,6 +11,18 @@ module V1
           return error!(failure_response(:artist_not_found), 404) unless artist.present?
           format_response(artist)
         end
+        desc "Get artist musics", summary: "Get artist musics"
+        params do
+          requires :id, type: Integer, desc: "Artist ID"
+          optional :page, type: Integer, desc: "Page number"
+          optional :per_page, type: Integer, desc: "Per page number", default: 50
+        end
+        get ':id/musics' do
+          artist = Artist.find(params[:id])
+          return error!(failure_response(:artist_not_found), 404) unless artist.present?
+          musics = artist.musics
+          paginated_response(musics)
+        end
       end
     end
   end
