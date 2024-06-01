@@ -30,7 +30,7 @@ module ResponseHelper
       def paginated_response(collection, options = {})
         @collection = collection
         @page = params[:page] || 1
-        @per_page = params[:per_page] || 20
+        @per_page = params[:per_page] || 50
         if @collection.is_a?(Hash)
           collection = collection[:items]
           @collection = @collection[:items]
