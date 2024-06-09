@@ -64,8 +64,8 @@ Once the backend server is up and running, you can interact with it using the pr
 
 The API documentation can be found:
 - [User api docs](http://localhost:3000/user-api-docs)
-- [Artist api docs](localhost:3000/artist-api-docs)
-- [Admin page](localhost:3000/admin)
+- [Artist api docs](http://localhost:3000/artist-api-docs)
+- [Admin page](http://localhost:3000/admin)
 
 You can use tools like Postman or curl to make API requests and test the functionalities provided by the backend system.
 
