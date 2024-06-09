@@ -29,20 +29,23 @@ To set up the Streaming Music Backend, follow these steps:
 
 2. **Install Dependencies:** Navigate to the project directory and install the dependencies using Bundler. Run `bundle install` to install all required gems.
 
-3. **Database Setup:** Set up the database required for the backend system. This may involve creating a new database instance, running migrations, and seeding initial data. You can use tools like ActiveRecord migrations and seeds to manage the database schema and data.
+3. **Database Setup:** Set up the database name, password, required for the backend system in file `config/database.yml`.
 
 4. **Environment Configuration:** Configure environment variables required for the backend. These variables may include database connection settings, API keys, and security parameters. You can use a tool like dotenv to manage environment variables.
-
-5. **Start the Server:** Once everything is set up, start the server using the appropriate command. For example, if you're using Rack or Sinatra, run `rackup` or `ruby app.rb` respectively.
 
 ## Configuration
 
 The backend system can be configured using environment variables. Here are the key environment variables you may need to set:
 
-- `DATABASE_URL`: The connection URL for the database.
-- `SECRET_KEY`: A secret key used for encrypting user authentication tokens.
-- `API_KEY`: API key required for accessing third-party services (if applicable).
-- `PORT`: The port on which the server should listen for incoming requests.
+- `ADMIN_JWT_PRIVATE_KEY`: RSA PRIVATE KEY FOR ADMIN.
+- `ADMIN_JWT_PUBLIC_KEY`: RSA PUBLIC KEY FOR ADMIN.
+- `USER_JWT_PRIVATE_KEY`: RSA PRIVATE KEY FOR USER.
+- `USER_JWT_PUBLIC_KEY`: RSA PUBLIC KEY FOR USER.
+- `ARTIST_JWT_PRIVATE_KEY`: RSA PRIVATE KEY FOR ARTIST.
+- `ARTIST_JWT_PRIVATE_KEY`: RSA PRIVATE KEY FOR ARTIST.
+- `RAILS_ENV`: THE RAILS ENVIRONMENT.
+- `PORT`: PORT OF APPLICATION.
+- `MONGODB_HOST`: MONGODB HOST URL
 
 Make sure to set these variables according to your environment before starting the server.
 
