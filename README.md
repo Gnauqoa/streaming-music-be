@@ -2,6 +2,8 @@
 
 Welcome to the Streaming Music Backend repository! This backend system is designed to handle the server-side functionalities required for a streaming music service. Below you'll find information on how to set up, configure, and use this backend system.
 
+- Database: PostgreSQL and MongoDB
+
 ## Table of Contents
 
 1. [Features](#features)
