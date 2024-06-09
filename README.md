@@ -47,6 +47,8 @@ The backend system can be configured using environment variables. Here are the k
 - `PORT`: PORT OF APPLICATION.
 - `MONGODB_HOST`: MONGODB HOST URL
 
+Or you can check file `.env.example`
+
 Make sure to set these variables according to your environment before starting the server.
 
 ## Usage
