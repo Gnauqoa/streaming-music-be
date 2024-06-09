@@ -59,7 +59,7 @@ Start application with command: `rails s`, application will run on port config i
 Once the backend server is up and running, you can interact with it using the provided APIs. 
 
 The API documentation can be found:
-- User api docs: [user](localhost:3000/user-api-docs)
+- User api docs: [user](http://localhost:3000/user-api-docs)
 - Artist api docs: [artist](localhost:3000/artist-api-docs)
 - Admin page: [admin](localhost:3000/admin)
 
