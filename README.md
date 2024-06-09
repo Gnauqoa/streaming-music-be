@@ -50,8 +50,14 @@ The backend system can be configured using environment variables. Here are the k
 Make sure to set these variables according to your environment before starting the server.
 
 ## Usage
+Start application with command: `rails s`, application will run on port config in env (default is 3000)
 
-Once the backend server is up and running, you can interact with it using the provided APIs. The API documentation can be found [here](localhost:3000/user-api-docs).
+Once the backend server is up and running, you can interact with it using the provided APIs. 
+
+The API documentation can be found:
+- User api docs: localhost:3000/user-api-docs
+- Artist api docs: localhost:3000/artist-api-docs
+- Admin page: localhost:3000/admin
 
 You can use tools like Postman or curl to make API requests and test the functionalities provided by the backend system.
 
