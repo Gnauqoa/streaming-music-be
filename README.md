@@ -1,18 +1,16 @@
-Streaming Music Backend
-This repository contains the backend code for a streaming music service.
+## Streaming Music Backend
+- This repository contains the backend code for a streaming music service.
 
-Features
-User authentication and authorization
-Music library management (add, remove, edit)
-User playlists creation and management
-Music streaming functionality
-Technologies
-(Specify the programming languages and frameworks used. For example: Python, Django, Flask, etc.)
-(Mention any databases used. For example: PostgreSQL, MySQL, etc.)
-(List any other relevant technologies used. For example: message queues, caching systems, etc.)
-Setup
+## Features
+- User authentication and authorization
+- Music library management (add, remove, edit)
+- User playlists creation and management
+- Music streaming functionality
+## Technologies
+(Mention any databases used: PostgreSQL, MongoDB)
+### Setup
 Clone the repository:
-Bash
+### Bash
 git clone https://github.com/your-username/streaming-music-backend.git
 Use code with caution.
 content_copy
