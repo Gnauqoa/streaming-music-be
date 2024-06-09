@@ -33,9 +33,11 @@ To set up the project, follow these steps:
 
 2. **Install Dependencies:** Navigate to the project directory and install the dependencies using Bundler. Run `bundle install` to install all required gems.
 
-3. **Database Setup:** Set up the database name, password, required for the backend system in file `config/database.yml`.
+3. **PostgreSQL Setup:** Set up the PostgreSQL name, password, required for the backend system in file `config/database.yml`.
 
-4. **Environment Configuration:** Configure environment variables required for the backend. These variables may include database connection settings, API keys, and security parameters. You can use a tool like dotenv to manage environment variables.
+4. **MongoDB Setup:** Setup the mongodb in file: `config/mongoid.yml`.
+
+5. **Environment Configuration:** Configure environment variables required for the backend. These variables may include database connection settings, API keys, and security parameters. You can use a tool like dotenv to manage environment variables.
 
 ## Configuration
 
