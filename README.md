@@ -23,7 +23,9 @@ Welcome to the Streaming Music Backend repository! This backend system is design
 
 ## Setup
 
-To set up the Streaming Music Backend, follow these steps:
+Make sure you have installed Ruby and Rails. I recommend using [rvm](https://github.com/rvm/rvm) to manage Ruby and Rails versions.
+
+To set up the project, follow these steps:
 
 1. **Clone the Repository:** Clone this repository to your local machine using `git clone`.
 
@@ -47,7 +49,7 @@ The backend system can be configured using environment variables. Here are the k
 - `PORT`: PORT OF APPLICATION.
 - `MONGODB_HOST`: MONGODB HOST URL
 
-Or you can check file `.env.example`
+Or you can check in file `.env.example`
 
 Make sure to set these variables according to your environment before starting the server.
 
